@@ -1,7 +1,5 @@
 import edu.princeton.cs.algs4.StdStats;
-
-import java.util.ArrayList;
-import java.util.Collections;
+import edu.princeton.cs.algs4.StdRandom;
 
 public class PercolationStats {
 
@@ -9,7 +7,6 @@ public class PercolationStats {
   private int T;
 
   // perform independent trials on an n-by-n grid
-  //TODO might need to use their provided random library
   public PercolationStats(int n, int trials) {
     if(n <= 0 || trials <= 0) {
       throw new IllegalArgumentException();
@@ -18,13 +15,9 @@ public class PercolationStats {
     percThreshList = new double[trials];
     for(int i = 0; i < trials; i++) {
       Percolation perc = new Percolation(n);
-      ArrayList<Integer> order = new ArrayList<Integer>();
       int sq = n*n;
-      for(int j = 0; j < sq; j++) {
-        order.add(j);
-      }
-      Collections.shuffle(order);
       double count = 0;
+      int[] order = StdRandom.permutation(sq);
       for(Integer loc : order) {
         count++;
         int row = loc / n;
@@ -58,7 +51,7 @@ public class PercolationStats {
     return mean() + ((1.96*stddev()) / Math.sqrt((double) T));
   }
 
-  public void printIt() {
+  private void printIt() {
     //don't care enough to fuff about with printf
     System.out.println("mean                    = " + Double.toString(mean()));
     System.out.println("stddev                  = " + Double.toString(stddev()));
@@ -70,6 +63,9 @@ public class PercolationStats {
   public static void main(String[] args) {
     PercolationStats percs = 
       new PercolationStats(new Integer(args[0]), new Integer(args[1]));
+    System.out.println("mean                    = " + Double.toString(percs.mean()));
+    System.out.println("stddev                  = " + Double.toString(percs.stddev()));
+    System.out.println("95% confidence interval = [" + Double.toString(percs.confidenceLo()) + ", " + Double.toString(percs.confidenceLo()) + "]");
   }
 
 }

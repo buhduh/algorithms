@@ -63,17 +63,23 @@ public class Percolation {
     if(nodes[one] == nodes[two]) {
       return;
     }
-    //Does it really matter if I iterate through the lowest count?
-    //don't update nodes[one] until done,
+    int lessIndex, moreIndex;
+    if(nodes[one].indeces.size() < nodes[two].indeces.size()) {
+      lessIndex = one;
+      moreIndex = two;
+    } else {
+      lessIndex = two;
+      moreIndex = one;
+    }
     //don't know the behavior if I switch this out
     //from underneath the iteration or really care
-    for(int i : nodes[one].indeces) {
-      if(i == one) continue;
-      nodes[i] = nodes[two];
-      nodes[two].indeces.add(i);
+    for(int i : nodes[lessIndex].indeces) {
+      if(i == lessIndex) continue;
+      nodes[i] = nodes[moreIndex];
+      nodes[moreIndex].indeces.add(i);
     }
-    nodes[one] = nodes[two];
-    nodes[two].indeces.add(one);
+    nodes[lessIndex] = nodes[moreIndex];
+    nodes[moreIndex].indeces.add(lessIndex);
   }
 
   // opens the site (row, col) if it is not open already
